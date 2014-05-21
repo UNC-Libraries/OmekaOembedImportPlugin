@@ -172,7 +172,7 @@ along with the Omeka Oembed Import Plugin. If not, see
  * @param array $errors
  * @param string $field
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function render_error($errors, $field)
 {

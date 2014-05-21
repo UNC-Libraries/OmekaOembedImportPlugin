@@ -29,7 +29,7 @@ along with the Omeka Oembed Import Plugin. If not, see
  * @license    http://www.gnu.org/licenses/gpl-3.0.html
  * @version    1.1.1
  * @package OembedImport
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  **/
 
 add_plugin_hook('install', 'oembed_import_install');
@@ -48,7 +48,7 @@ add_filter('admin_navigation_main', 'oembed_import_admin_navigation');
  * 2. Insert initial whitelists.
  *
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_install()
 {
@@ -75,7 +75,7 @@ function oembed_import_install()
  * 1. Drop the whitelist database table.
  *
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_uninstall()
 {
@@ -89,12 +89,12 @@ function oembed_import_uninstall()
  *
  * @param object $acl
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_define_acl($acl)
 {
     // setup ACL resource so we can restrict oembed to super and admin
-    $resource = new Omeka_Acl_Resource('OembedImport_Index');
+    $resource = new Zend_Acl_Resource('OembedImport_Index');
     $resource->add(array('index',));
     $acl->add($resource);
     $acl->deny(null, 'OembedImport_Index'); // deny ALL
@@ -108,7 +108,7 @@ function oembed_import_define_acl($acl)
  *
  * @param array $tabs
  * @return array $tabs
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_admin_navigation($tabs)
 {
@@ -123,7 +123,7 @@ function oembed_import_admin_navigation($tabs)
  *
  * @param object $request
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_admin_header($request)
 {
@@ -136,7 +136,7 @@ function oembed_import_admin_header($request)
  * Display the Oembed Import plugin configuration form.
  *
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_config_form()
 {
@@ -170,7 +170,7 @@ function oembed_import_config_form()
  * Process the Oembed Import configuration POST data.
  *
  * @return void
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
 function oembed_import_config()
 {

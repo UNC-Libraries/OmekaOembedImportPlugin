@@ -21,7 +21,7 @@ along with the Omeka Oembed Import Plugin. If not, see
 
 /**
  * @package OembedImport
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  * @copyright University of North Carolina at Chapel Hill University Library, 2010
  * @license http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -29,9 +29,9 @@ along with the Omeka Oembed Import Plugin. If not, see
 /**
  * OembedImport index controller class
  *
- * @author Stephen Ball
+ * @author Stephen Ball, Dean Farrell
  */
-class OembedImport_IndexController extends Omeka_Controller_Action
+class OembedImport_IndexController extends Omeka_Controller_AbstractActionController
 {
     /**
      * Display the Oembed Item Import and import verification pages.
@@ -42,7 +42,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * off to an import action.
      *
      * @return void
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     public function indexAction() 
     {
@@ -85,7 +85,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * The POST data is parsed into omeka item data structures and imported.
      *
      * @return void
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     public function importAction()
     {
@@ -139,7 +139,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * Also handles POSTed requests to update, delete, add whitelists.
      *
      * @return void
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     public function whitelistsAction()
     {
@@ -218,7 +218,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      *
      * @param array $whitelist
      * @return array $errors
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function validate_whitelist($whitelist)
     {
@@ -249,7 +249,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * @param array $whitelist whitelist data, fields: id, url_scheme, api_endpoint
      * @param db $db omeka database connection
      * @return boolean $success
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function update_whitelist($whitelist, $db)
     {
@@ -267,7 +267,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * @param array $whitelist whitelist data, fields: id, url_scheme, api_endpoint
      * @param db $db omeka database connection
      * @return boolean $success
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function insert_whitelist($whitelist, $db)
     {
@@ -284,7 +284,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * @param array $whitelist whitelist data, fields: id, url_scheme, api_endpoint
      * @param db $db omeka database connection
      * @return boolean $success
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function delete_whitelist($whitelist, $db)
     {
@@ -299,7 +299,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      *
      * @param array $_POST
      * @return array $errors
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function validate_import($_POST)
     {
@@ -319,7 +319,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      *
      * @param string $url
      * @return string
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function determine_api_endpoint($url)
     {
@@ -345,7 +345,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * @param string $scheme URL scheme, e.g. http://dc.lib.unc.edu/*
      * @param string $url
      * @return boolean
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function endpoint_match($scheme, $url)
     {
@@ -364,7 +364,7 @@ class OembedImport_IndexController extends Omeka_Controller_Action
      * @param string $api_endpoint URL to the matching oembed API
      * @param string $url URL to retrieve data for
      * @return object
-     * @author Stephen Ball
+     * @author Stephen Ball, Dean Farrell
      */
     private function parse_oembed($api_endpoint, $url)
     {
