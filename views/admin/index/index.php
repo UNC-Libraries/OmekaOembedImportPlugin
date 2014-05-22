@@ -95,7 +95,7 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
             </form>
         <?php else: ?>
             <h2>Import this item?</h2>
-            <form action="<?php echo html_escape(uri('oembed-import/index/import')); ?>" method="post" accept-charset="utf-8">
+            <form action="<?php echo html_escape(url('oembed-import/index/import')); ?>" method="post" accept-charset="utf-8">
                 <table border="0" cellspacing="5" cellpadding="5">
                     <thead>
                     <tr>
