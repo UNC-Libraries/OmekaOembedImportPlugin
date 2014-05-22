@@ -27,10 +27,10 @@ along with the Omeka Oembed Import Plugin. If not, see
 
 <ul id="section-nav" class="navigation">
     <li class="">
-        <a href="<?php echo html_escape(uri('oembed-import')); ?>">Import</a>
+        <a href="<?php echo html_escape(url('oembed-import')); ?>">Import</a>
     </li>
     <li class="current">
-        <a href="<?php echo html_escape(uri('oembed-import/index/whitelists')); ?>">Whitelists</a>
+        <a href="<?php echo html_escape(url('oembed-import/index/whitelists')); ?>">Whitelists</a>
     </li>
 </ul>
 

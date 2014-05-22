@@ -19,18 +19,17 @@ along with the Omeka Oembed Import Plugin. If not, see
 <http://www.gnu.org/licenses/gpl-3.0.html>.
 */
 
-
-head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class' => 'horizontal-nav'));
+echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class' => 'horizontal-nav'));
 ?>
 
     <h1>Oembed Import</h1>
 
     <ul id="section-nav" class="navigation">
         <li class="current">
-            <a href="<?php echo html_escape(uri('oembed-import')); ?>">Import</a>
+            <a href="<?php echo html_escape(url('oembed-import/index')); ?>">Import</a>
         </li>
         <li class="">
-            <a href="<?php echo html_escape(uri('oembed-import/index/whitelists')); ?>">Whitelists</a>
+            <a href="<?php echo html_escape(url('oembed-import/index/whitelists')); ?>">Whitelists</a>
         </li>
     </ul>
 
@@ -70,7 +69,7 @@ head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class'
                             <?php
                             $xhtml_properties = array('name'=>'collection', 'id'=>'collection');
                             $value = $collection;
-                            echo select_collection($xhtml_properties, $value);
+                            //     echo get_records($xhtml_properties, $value);
                             ?>
                         </td>
                     </tr>
@@ -87,7 +86,7 @@ head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class'
                             <?php
                             $xhtml_properties = array('name'=>'item_type', 'id'=>'item_type');
                             $value = $item_type;
-                            echo select_item_type($xhtml_properties, $value);
+                            //   echo select_item_type($xhtml_properties, $value);
                             ?>
                         </td>
                     </tr>

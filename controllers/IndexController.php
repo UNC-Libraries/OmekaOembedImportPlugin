@@ -301,7 +301,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
      * @return array $errors
      * @author Stephen Ball, Dean Farrell
      */
-    private function validate_import($_POST)
+    private function validate_import()
     {
         $errors = array();
         // url field cannot be blank
