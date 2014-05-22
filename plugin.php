@@ -87,7 +87,7 @@ function oembed_import_uninstall()
 /**
  * Define ACLs for accessing the OembedImport plugin.
  *
- * @param object $acl
+ * @param object $args
  * @return void
  * @author Stephen Ball, Dean Farrell
  */
@@ -98,24 +98,28 @@ function oembed_import_define_acl($args)
     $resource = new Zend_Acl_Resource('OembedImport_Index');
     $acl->addResource($resource);
     $acl->deny(null, 'OembedImport_Index'); // deny ALL
-    $acl->allow('super', 'OembedImport_Index', array('show', 'add', 'delete'));
-    $acl->allow('admin', 'OembedImport_Index', array('show', 'add', 'delete'));
+    $acl->allow(array('super', 'admin'), array('OembedImport_Index'));
 }
 
 /**
- * Add the "Oembed Import" navigation tab to the admin interface if
+ * Add the "Oembed Import" navigation to the admin interface if
  * the current user has sufficient permissions.
  *
- * @param array $tabs
- * @return array $tabs
+ * @param array $nav
+ * @return array $nav
  * @author Stephen Ball, Dean Farrell
  */
-function oembed_import_admin_navigation($tabs)
+function oembed_import_admin_navigation(array $nav)
 {
     if (is_allowed('OembedImport_Index', 'index')) {
-        $tabs['Oembed Import'] = uri('oembed-import');
+        $nav[] = array(
+            'label' => __('Oembed Import'),
+            'uri' => url('oembed-import'),
+            'resource' => 'OembedImport_Index',
+            'privilege' => 'add'
+        );
     }
-    return $tabs;
+    return $nav;
 }
 
 /**
