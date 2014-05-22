@@ -27,7 +27,7 @@ along with the Omeka Oembed Import Plugin. If not, see
  *
  * @copyright  University of North Carolina at Chapel Hill University Library, 2010
  * @license    http://www.gnu.org/licenses/gpl-3.0.html
- * @version    1.1.1
+ * @version    2.0.0
  * @package OembedImport
  * @author Stephen Ball, Dean Farrell
  **/
@@ -59,12 +59,12 @@ function oembed_import_install()
         `url_scheme` varchar(255) NOT NULL,
         `api_endpoint` varchar(255) NOT NULL,
         PRIMARY KEY(`id`)
-    ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-    
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
+
     // initial whitelists
     $db->exec("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
                VALUES ('http://dc.lib.unc.edu/*','http://dc.lib.unc.edu/oembed.php')");
-    
+
     $db->exec("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
                VALUES ('http://*.flickr.com/*','http://www.flickr.com/services/oembed/')");
 }
@@ -91,15 +91,15 @@ function oembed_import_uninstall()
  * @return void
  * @author Stephen Ball, Dean Farrell
  */
-function oembed_import_define_acl($acl)
+function oembed_import_define_acl($args)
 {
+    $acl = $args['acl'];
     // setup ACL resource so we can restrict oembed to super and admin
     $resource = new Zend_Acl_Resource('OembedImport_Index');
-    $resource->add(array('index',));
-    $acl->add($resource);
+    $acl->addResource($resource);
     $acl->deny(null, 'OembedImport_Index'); // deny ALL
-    $acl->allow('super', 'OembedImport_Index');
-    $acl->allow('admin', 'OembedImport_Index');
+    $acl->allow('super', 'OembedImport_Index', array('show', 'add', 'delete'));
+    $acl->allow('admin', 'OembedImport_Index', array('show', 'add', 'delete'));
 }
 
 /**
@@ -112,7 +112,7 @@ function oembed_import_define_acl($acl)
  */
 function oembed_import_admin_navigation($tabs)
 {
-    if (get_acl()->checkUserPermission('OembedImport_Index', 'index')) {
+    if (is_allowed('OembedImport_Index', 'index')) {
         $tabs['Oembed Import'] = uri('oembed-import');
     }
     return $tabs;
@@ -146,10 +146,10 @@ function oembed_import_config_form()
     if (!$maxheight = get_option('oembed_import_maxheight')) {
         $maxheight = 1000;
     }
-?>
+    ?>
     <div class="field">
         <label for="oembed_import_maxwidth">Maximum image width</label>
-        <?php echo __v()->formText('oembed_import_maxwidth', $maxwidth, null);?>
+        <?php echo get_view()->formText('oembed_import_maxwidth', $maxwidth, null);?>
         <p class="explanation">Default: 1000</p>
         <p class="explanation">Set to a reasonable pixel size. If too high
             then the oembed provider will likely be slow responding which
@@ -157,7 +157,7 @@ function oembed_import_config_form()
     </div>
     <div class="field">
         <label for="oembed_import_maxheight">Maximum image height</label>
-        <?php echo __v()->formText('oembed_import_maxheight', $maxheight, null);?>
+        <?php echo get_view()->formText('oembed_import_maxheight', $maxheight, null);?>
         <p class="explanation">Default: 1000</p>
         <p class="explanation">Set to a reasonable pixel size. If too high
             then the oembed provider will likely be slow responding which
@@ -185,5 +185,4 @@ function oembed_import_config()
         }
     }
 }
-
 ?>
