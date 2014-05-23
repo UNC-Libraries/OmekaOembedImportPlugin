@@ -67,7 +67,6 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                     </th>
                     <td>
                         <select id="item_type">
-                        <option id="">--Select Collection--</option>
                         <?php
                         $colls = get_table_options('Collection');
                         foreach($colls as $id => $coll): ?>
@@ -87,7 +86,6 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                     </th>
                     <td>
                         <select id="item_type">
-                            <option id="">--Select Type--</option>
                         <?php
                         $item_types = get_table_options('ItemType');
                         foreach($item_types as $id => $type): ?>
