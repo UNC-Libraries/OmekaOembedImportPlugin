@@ -29,7 +29,8 @@ along with the Omeka Oembed Import Plugin. If not, see
  * @license    http://www.gnu.org/licenses/gpl-3.0.html
  * @version    2.0.0
  * @package OembedImport
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
+ * @author Updated for Omeka 2 by Dean Farrell
  **/
 
 add_plugin_hook('install', 'oembed_import_install');
@@ -48,7 +49,7 @@ add_filter('admin_navigation_main', 'oembed_import_admin_navigation');
  * 2. Insert initial whitelists.
  *
  * @return void
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_install()
 {
@@ -75,7 +76,7 @@ function oembed_import_install()
  * 1. Drop the whitelist database table.
  *
  * @return void
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_uninstall()
 {
@@ -89,7 +90,7 @@ function oembed_import_uninstall()
  *
  * @param object $args
  * @return void
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_define_acl($args)
 {
@@ -107,7 +108,7 @@ function oembed_import_define_acl($args)
  *
  * @param array $nav
  * @return array $nav
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_admin_navigation(array $nav)
 {
@@ -127,7 +128,7 @@ function oembed_import_admin_navigation(array $nav)
  *
  * @param object $request
  * @return void
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_admin_header($request)
 {
@@ -140,7 +141,7 @@ function oembed_import_admin_header($request)
  * Display the Oembed Import plugin configuration form.
  *
  * @return void
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_config_form()
 {
@@ -174,7 +175,7 @@ function oembed_import_config_form()
  * Process the Oembed Import configuration POST data.
  *
  * @return void
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
  */
 function oembed_import_config()
 {

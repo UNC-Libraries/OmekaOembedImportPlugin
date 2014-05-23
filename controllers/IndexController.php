@@ -21,7 +21,8 @@ along with the Omeka Oembed Import Plugin. If not, see
 
 /**
  * @package OembedImport
- * @author Stephen Ball, Dean Farrell
+ * @author Stephen Ball
+ * @author Updated for Omeka 2 by Dean Farrell
  * @copyright University of North Carolina at Chapel Hill University Library, 2010
  * @license http://www.apache.org/licenses/LICENSE-2.0.txt
  */
