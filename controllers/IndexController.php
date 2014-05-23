@@ -21,8 +21,7 @@ along with the Omeka Oembed Import Plugin. If not, see
 
 /**
  * @package OembedImport
- * @author Stephen Ball
- * @author Updated for Omeka 2 by Dean Farrell
+ * @author Stephen Ball, Dean Farrell
  * @copyright University of North Carolina at Chapel Hill University Library, 2010
  * @license http://www.apache.org/licenses/LICENSE-2.0.txt
  */
@@ -66,8 +65,9 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 $this->_helper->flashMessenger('Unable to import.', 'error');
             } else {
                 $oembed_data = $this->parse_oembed($api_endpoint, trim($_POST['url']));
+
                 if ($oembed_data->type != 'photo') {
-                    $this->_helper->flashMessenger('Oembed Item is not a "photo" type.', 'error');
+                    $this->_helper->flashMessenger('Oembed Item is not a "photo" type. Type: ' . $oembed_data, 'error');
                     $oembed_data = null; // stop further processing
                 }
             }
@@ -132,7 +132,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 $this->_helper->flashMessenger('Import failed.', 'error');
             }
         }
-        $this->redirect->goto('index');
+        $this->_helper->redirector('index');
     }
 
     /**
@@ -174,7 +174,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                     case 'edit':
                         if ($this->update_whitelist($_POST, $db)) {
                             $this->_helper->flashMessenger($success_message, 'success');
-                            $this->redirect->goto('whitelists');
+                            $this->_helper->redirector('whitelists');
                         } else {
                             $this->_helper->flashMessenger($error_message, 'error');
                         }
@@ -182,7 +182,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                     case 'new':
                         if ($this->insert_whitelist($_POST, $db)) {
                             $this->_helper->flashMessenger($success_message, 'success');
-                            $this->redirect->goto('whitelists');
+                            $this->_helper->redirector('whitelists');
                         } else {
                             $this->_helper->flashMessenger($error_message, 'error');
                         }
@@ -190,11 +190,11 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                     case 'delete':
                         if (isset($_POST['cancel'])) {
                             $this->_helper->flashMessenger('Cancelled.', 'success');
-                            $this->redirect->goto('whitelists');
+                            $this->_helper->redirector('whitelists');
                         }
                         if ($this->delete_whitelist($_POST, $db)) {
                             $this->_helper->flashMessenger($success_message, 'success');
-                            $this->redirect->goto('whitelists');
+                            $this->_helper->redirector('whitelists');
                         } else {
                             $this->_helper->flashMessenger($error_message, 'error');
                         }
@@ -380,7 +380,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         }
         $oembed_lookup = "$api_endpoint?url=" . urlencode($url);
         $oembed_lookup .= "&maxwidth=$maxwidth&maxheight=$maxheight";
-        
+
         // try json
         $contents = $this->file_get_contents_curl($oembed_lookup . "&format=json");
         if ($contents) {

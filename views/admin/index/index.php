@@ -66,11 +66,11 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                         >Collection<?php echo render_error($errors, 'collection'); ?></label>
                     </th>
                     <td>
-                        <select id="item_type">
+                        <select id="collection" name="collection">
                         <?php
                         $colls = get_table_options('Collection');
                         foreach($colls as $id => $coll): ?>
-                            <option id="<?php echo $id; ?>"><?php echo $coll; ?></option>
+                            <option value="<?php echo $id; ?>"><?php echo $coll; ?></option>
                   <?php endforeach; ?>
                         </select>
                     </td>
@@ -78,6 +78,7 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                 
                 <tr>
                     <th>
+                        <?php $item_types = get_table_options('ItemType'); ?>
                         <label for="item_type"
                         <?php if (isset($errors['item_type'])): ?>
                             class="whitelist-error"
@@ -85,11 +86,10 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                         >Item Type<?php echo render_error($errors, 'item_type'); ?></label>
                     </th>
                     <td>
-                        <select id="item_type">
+                        <select id="item_type" name="item_type">
                         <?php
-                        $item_types = get_table_options('ItemType');
                         foreach($item_types as $id => $type): ?>
-                           <option id="<?php echo $id; ?>"><?php echo $type; ?></option>
+                           <option value="<?php echo $id; ?>"><?php echo $type; ?></option>
                   <?php endforeach; ?>
                         </select>
                     </td>
@@ -99,7 +99,7 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
         </form>
     <?php else: ?>
         <h2>Import this item?</h2>
-        <form action="<?php echo html_escape(uri('oembed-import/index/import')); ?>" method="post" accept-charset="utf-8">
+        <form action="<?php echo html_escape(url('oembed-import/index/import')); ?>" method="post" accept-charset="utf-8">
             <table border="0" cellspacing="5" cellpadding="5">
                 <thead>
                     <tr>
