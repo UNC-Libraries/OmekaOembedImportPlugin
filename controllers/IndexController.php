@@ -67,7 +67,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 $oembed_data = $this->parse_oembed($api_endpoint, trim($_POST['url']));
 
                 if ($oembed_data->type != 'photo') {
-                    $this->_helper->flashMessenger('Oembed Item is not a "photo" type. Type: ' . $oembed_data, 'error');
+                    $this->_helper->flashMessenger('Oembed Item is not a "photo" type.', 'error');
                     $oembed_data = null; // stop further processing
                 }
             }
