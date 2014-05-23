@@ -22,89 +22,95 @@ along with the Omeka Oembed Import Plugin. If not, see
 echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class' => 'horizontal-nav'));
 ?>
 
-    <h1>Oembed Import</h1>
+<h1>Oembed Import</h1>
 
-    <ul id="section-nav" class="navigation">
-        <li class="current">
-            <a href="<?php echo html_escape(url('oembed-import/index')); ?>">Import</a>
-        </li>
-        <li class="">
-            <a href="<?php echo html_escape(url('oembed-import/index/whitelists')); ?>">Whitelists</a>
-        </li>
-    </ul>
+<ul id="section-nav" class="navigation">
+    <li class="current">
+        <a href="<?php echo html_escape(url('oembed-import/index')); ?>">Import</a>
+    </li>
+    <li class="">
+        <a href="<?php echo html_escape(url('oembed-import/index/whitelists')); ?>">Whitelists</a>
+    </li>
+</ul>
 
-    <div id="primary">
-        <?php if (empty($oembed_data)): ?>
-            <h2>Oembed Item Import</h2>
-            <?php echo flash(); ?>
-            <form id="oembedimport" method="post" action="">
-                <?php
-                $url = isset($_POST['url']) ? $_POST['url'] : '';
-                $collection = isset($_POST['collection']) ? $_POST['collection'] : '';
-                $item_type = isset($_POST['item_type']) ? $_POST['item_type'] : '';
-                ?>
-                <table border="0" cellspacing="5" cellpadding="5">
-                    <tr>
-                        <th>
-                            <label for="url"
-                                <?php if (isset($errors['url'])): ?>
-                                    class="whitelist-error"
-                                <?php endif ?>
-                                >Item URL<?php echo render_error($errors, 'url'); ?></label>
-                        </th>
-                        <td>
-                            <input type="text" name="url" value="<?php echo $url; ?>" id="url" size="60" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>
-                            <label for="collection"
-                                <?php if (isset($errors['collection'])): ?>
-                                    class="whitelist-error"
-                                <?php endif ?>
-                                >Collection<?php echo render_error($errors, 'collection'); ?></label>
-                        </th>
-                        <td>
-                            <?php
-                            $xhtml_properties = array('name'=>'collection', 'id'=>'collection');
-                            $value = $collection;
-                            //     echo get_records($xhtml_properties, $value);
-                            ?>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>
-                            <label for="item_type"
-                                <?php if (isset($errors['item_type'])): ?>
-                                    class="whitelist-error"
-                                <?php endif ?>
-                                >Item Type<?php echo render_error($errors, 'item_type'); ?></label>
-                        </th>
-                        <td>
-                            <?php
-                            $xhtml_properties = array('name'=>'item_type', 'id'=>'item_type');
-                            $value = $item_type;
-                            //   echo select_item_type($xhtml_properties, $value);
-                            ?>
-                        </td>
-                    </tr>
-                </table>
-                <input type="submit" value="Import Item" />
-            </form>
-        <?php else: ?>
-            <h2>Import this item?</h2>
-            <form action="<?php echo html_escape(url('oembed-import/index/import')); ?>" method="post" accept-charset="utf-8">
-                <table border="0" cellspacing="5" cellpadding="5">
-                    <thead>
+<div id="primary">
+    <?php if (empty($oembed_data)): ?>
+        <h2>Oembed Item Import</h2>
+        <?php echo flash(); ?>
+        <form id="oembedimport" method="post" action="">
+            <?php
+            $url = isset($_POST['url']) ? $_POST['url'] : '';
+            $collection = isset($_POST['collection']) ? $_POST['collection'] : '';
+            $item_type = isset($_POST['item_type']) ? $_POST['item_type'] : '';
+            ?>
+            <table border="0" cellspacing="5" cellpadding="5">
+                <tr>
+                    <th>
+                        <label for="url"
+                        <?php if (isset($errors['url'])): ?>
+                            class="whitelist-error"
+                        <?php endif ?>
+                        >Item URL<?php echo render_error($errors, 'url'); ?></label>
+                    </th>
+                    <td>
+                        <input type="text" name="url" value="<?php echo $url; ?>" id="url" size="60" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th>
+                        <label for="collection"
+                        <?php if (isset($errors['collection'])): ?>
+                            class="whitelist-error"
+                        <?php endif ?>
+                        >Collection<?php echo render_error($errors, 'collection'); ?></label>
+                    </th>
+                    <td>
+                        <select id="item_type">
+                        <option id="">--Select Collection--</option>
+                        <?php
+                        $colls = get_table_options('Collection');
+                        foreach($colls as $id => $coll): ?>
+                            <option id="<?php echo $id; ?>"><?php echo $coll; ?></option>
+                  <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th>
+                        <label for="item_type"
+                        <?php if (isset($errors['item_type'])): ?>
+                            class="whitelist-error"
+                        <?php endif ?>
+                        >Item Type<?php echo render_error($errors, 'item_type'); ?></label>
+                    </th>
+                    <td>
+                        <select id="item_type">
+                            <option id="">--Select Type--</option>
+                        <?php
+                        $item_types = get_table_options('ItemType');
+                        foreach($item_types as $id => $type): ?>
+                           <option id="<?php echo $id; ?>"><?php echo $type; ?></option>
+                  <?php endforeach; ?>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Import Item" />
+        </form>
+    <?php else: ?>
+        <h2>Import this item?</h2>
+        <form action="<?php echo html_escape(uri('oembed-import/index/import')); ?>" method="post" accept-charset="utf-8">
+            <table border="0" cellspacing="5" cellpadding="5">
+                <thead>
                     <tr>
                         <th>Field</th>
                         <th>Value</th>
                     </tr>
-                    </thead>
-                    <tbody>
-
+                </thead>
+                <tbody>
+                    
                     <tr>
                         <th>Image Preview</th>
                         <td>
@@ -119,7 +125,7 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                             <?php endif ?>
                         </td>
                     </tr>
-
+                    
                     <tr>
                         <th>
                             <label for="title">Title</label>
@@ -128,7 +134,7 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                             <input type="text" name="title" value="<?php echo $oembed_data->title; ?>" id="title" size="60" />
                         </td>
                     </tr>
-
+                    
                     <tr>
                         <th>
                             <label for="description">Description</label>
@@ -137,7 +143,7 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                             <input type="text" name="description" value="" id="description" size="60" />
                         </td>
                     </tr>
-
+                    
                     <tr>
                         <th>
                             <label for="tags">Tags (separated by comma)</label>
@@ -146,22 +152,22 @@ echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_c
                             <input type="text" name="tags" value="" id="oembed-tags" size="60" />
                         </td>
                     </tr>
-                    </tbody>
-                </table>
-                <input type="hidden" name="url" value="<?php echo $oembed_data->url; ?>" />
-                <input type="hidden" name="collection_id" value="<?php echo $_POST['collection']; ?>" />
-                <input type="hidden" name="item_type_id" value="<?php echo $_POST['item_type']; ?>" />
-                <input type="hidden" name="provider_name" value="<?php echo $oembed_data->provider_name; ?>" />
-                <input type="hidden" name="provider_url" value="<?php echo $oembed_data->provider_url; ?>" />
-                <input type="hidden" name="original_url" value="<?php echo $_POST['url']; ?>" />
-                <p><input type="submit" name="import" value="Import" /></p>
-                <p><input type="submit" class="cancel" name="cancel" value="No, Cancel" /></p>
-            </form>
-        <?php endif ?>
-    </div>
+                </tbody>
+            </table>
+            <input type="hidden" name="url" value="<?php echo $oembed_data->url; ?>" />
+            <input type="hidden" name="collection_id" value="<?php echo $_POST['collection']; ?>" />
+            <input type="hidden" name="item_type_id" value="<?php echo $_POST['item_type']; ?>" />
+            <input type="hidden" name="provider_name" value="<?php echo $oembed_data->provider_name; ?>" />
+            <input type="hidden" name="provider_url" value="<?php echo $oembed_data->provider_url; ?>" />
+            <input type="hidden" name="original_url" value="<?php echo $_POST['url']; ?>" />
+            <p><input type="submit" name="import" value="Import" /></p>
+            <p><input type="submit" class="cancel" name="cancel" value="No, Cancel" /></p>
+        </form>
+    <?php endif ?>
+</div>
 
 <?php
-foot();
+    foot(); 
 ?>
 
 <?php
@@ -177,8 +183,8 @@ function render_error($errors, $field)
 {
     if (isset($errors[$field])) {
         ?>
-        <strong><?php echo $errors[$field]; ?></strong>
-    <?php
+            <strong><?php echo $errors[$field]; ?></strong>
+        <?php
     }
 }
 ?>

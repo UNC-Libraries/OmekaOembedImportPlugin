@@ -54,18 +54,18 @@ function oembed_import_install()
 {
     $db = get_db();
     // create oembed whitelist table
-    $db->exec("CREATE TABLE IF NOT EXISTS `{$db->prefix}oembed_import_whitelists` (
+    $db->query("CREATE TABLE IF NOT EXISTS `{$db->prefix}oembed_import_whitelists` (
         `id` int(10) unsigned NOT NULL auto_increment,
         `url_scheme` varchar(255) NOT NULL,
         `api_endpoint` varchar(255) NOT NULL,
         PRIMARY KEY(`id`)
     ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-
+    
     // initial whitelists
-    $db->exec("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
+    $db->query("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
                VALUES ('http://dc.lib.unc.edu/*','http://dc.lib.unc.edu/oembed.php')");
-
-    $db->exec("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
+    
+    $db->query("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
                VALUES ('http://*.flickr.com/*','http://www.flickr.com/services/oembed/')");
 }
 
@@ -81,7 +81,7 @@ function oembed_import_uninstall()
 {
     // drop the tables
     $db = get_db();
-    $db->exec("DROP TABLE IF EXISTS `{$db->prefix}oembed_import_whitelists`");
+    $db->query("DROP TABLE IF EXISTS `{$db->prefix}oembed_import_whitelists`");
 }
 
 /**
@@ -150,7 +150,7 @@ function oembed_import_config_form()
     if (!$maxheight = get_option('oembed_import_maxheight')) {
         $maxheight = 1000;
     }
-    ?>
+?>
     <div class="field">
         <label for="oembed_import_maxwidth">Maximum image width</label>
         <?php echo get_view()->formText('oembed_import_maxwidth', $maxwidth, null);?>

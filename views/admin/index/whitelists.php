@@ -20,7 +20,7 @@ along with the Omeka Oembed Import Plugin. If not, see
 */
 
 
-    head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class' => 'horizontal-nav'));
+echo head(array('title' => 'Oembed Import', 'bodyclass' => 'primary', 'content_class' => 'horizontal-nav'));
 ?>
 
 <h1>Oembed Import</h1>
@@ -194,7 +194,7 @@ function display_whitelist_form($submit, $errors, $id, $url_scheme, $api_endpoin
                             class="whitelist-error"
                         <?php endif ?>
                         >
-                            <input type="text" name="url_scheme" value="<?php echo $url_scheme; ?>" id="url_scheme" size="60" />
+                            <input type="text" name="url_scheme" value="<?php echo $url_scheme; ?>" id="url_scheme" size="40" />
                             <?php if (isset($errors['url_scheme'])): ?>
                                 <br /><span><?php echo $errors['url_scheme']; ?></span>
                             <?php endif ?>
@@ -204,7 +204,7 @@ function display_whitelist_form($submit, $errors, $id, $url_scheme, $api_endpoin
                             class="whitelist-error"
                         <?php endif ?>
                         >
-                            <input type="text" name="api_endpoint" value="<?php echo $api_endpoint; ?>" id="api_endpoint" size="60" />
+                            <input type="text" name="api_endpoint" value="<?php echo $api_endpoint; ?>" id="api_endpoint" size="40" />
                             <?php if (isset($errors['api_endpoint'])): ?>
                                 <br /><span><?php echo $errors['api_endpoint']; ?></span>
                             <?php endif ?>

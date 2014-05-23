@@ -44,12 +44,13 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
      * @return void
      * @author Stephen Ball, Dean Farrell
      */
-    public function indexAction()
+    public function indexAction() 
     {
         $oembedImportSession = new Zend_Session_Namespace('OembedImport');
         $oembed_data = null;
+        $errors = false;
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $errors = $this->validate_import($_POST);
+            $errors = $this->validate_import();
             if (empty($errors)) {
                 /*
                     api endpoint validation here so we can easily
@@ -61,11 +62,11 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 }
             }
             if (!empty($errors)) {
-                $this->flashError('Unable to import.');
+                $this->_helper->flashMessenger('Unable to import.', 'error');
             } else {
                 $oembed_data = $this->parse_oembed($api_endpoint, trim($_POST['url']));
                 if ($oembed_data->type != 'photo') {
-                    $this->flashError('Oembed Item is not a "photo" type.');
+                    $this->_helper->flashMessenger('Oembed Item is not a "photo" type.', 'error');
                     $oembed_data = null; // stop further processing
                 }
             }
@@ -125,9 +126,9 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
             $this->view->file_metadata = $file_metadata;
             $item = insert_item($item_metadata, $item_element_texts, $file_metadata);
             if ($item) {
-                $this->flashSuccess('Item imported.');
+                $this->_helper->flashMessenger('Item imported.', 'success');
             } else {
-                $this->flashError('Import failed.');
+                $this->_helper->flashMessenger('Import failed.', 'error');
             }
         }
         $this->redirect->goto('index');
@@ -163,7 +164,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
             }
 
             if (!empty($errors)) {
-                $this->flashError($error_message);
+                $this->_helper->flashMessenger($error_message, 'error');
             } else {
                 // =========================================
                 // = validated: submit data or query to db =
@@ -171,30 +172,30 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 switch ($action) {
                     case 'edit':
                         if ($this->update_whitelist($_POST, $db)) {
-                            $this->flashSuccess($success_message);
+                            $this->_helper->flashMessenger($success_message, 'success');
                             $this->redirect->goto('whitelists');
                         } else {
-                            $this->flashError($error_message);
+                            $this->_helper->flashMessenger($error_message, 'error');
                         }
                         break;
                     case 'new':
                         if ($this->insert_whitelist($_POST, $db)) {
-                            $this->flashSuccess($success_message);
+                            $this->_helper->flashMessenger($success_message, 'success');
                             $this->redirect->goto('whitelists');
                         } else {
-                            $this->flashError($error_message);
+                            $this->_helper->flashMessenger($error_message, 'error');
                         }
                         break;
                     case 'delete':
                         if (isset($_POST['cancel'])) {
-                            $this->flashSuccess('Cancelled.');
+                            $this->_helper->flashMessenger('Cancelled.', 'success');
                             $this->redirect->goto('whitelists');
                         }
                         if ($this->delete_whitelist($_POST, $db)) {
-                            $this->flashSuccess($success_message);
+                            $this->_helper->flashMessenger($success_message, 'success');
                             $this->redirect->goto('whitelists');
                         } else {
-                            $this->flashError($error_message);
+                            $this->_helper->flashMessenger($error_message, 'error');
                         }
                         break;
                 }
@@ -225,7 +226,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $errors = array();
         $url_scheme = trim($whitelist['url_scheme']);
         $api_endpoint = trim($whitelist['api_endpoint']);
-
+        
         if (!strlen($url_scheme)) {
             $errors['url_scheme'] = 'Required.';
         } else {
@@ -242,7 +243,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         }
         return $errors;
     }
-
+    
     /**
      * Update the given whitelist in the database.
      *
@@ -260,7 +261,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $success = $db->query($sql, array($url_scheme, $api_endpoint, $id));
         return $success;
     }
-
+    
     /**
      * Insert a new whitelist into the database.
      *
@@ -277,7 +278,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $success = $db->query($sql, array($url_scheme, $api_endpoint));
         return $success;
     }
-
+    
     /**
      * Delete the given whitelist from the database.
      *
@@ -293,7 +294,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $success = $db->query($sql, array($id));
         return $success;
     }
-
+    
     /**
      * Validate POST data from an oembed item import.
      *
@@ -310,7 +311,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         }
         return $errors;
     }
-
+    
     /**
      * Determine the matching API Endpoint for a given URL.
      *
@@ -328,7 +329,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 FROM `{$db->prefix}oembed_import_whitelists`";
         $statement = $db->query($sql);
         $whitelist_rows = $statement->fetchAll();
-
+        
         foreach ($whitelist_rows as $row) {
             if ($this->endpoint_match($row['url_scheme'], $url)) {
                 return $row['api_endpoint'];
@@ -338,7 +339,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         // http://oohembed.com/
         return "http://oohembed.com/oohembed/";
     }
-
+    
     /**
      * Determine if the given url matches the given url scheme.
      *
@@ -357,7 +358,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $pattern = "|^$pattern$|";
         return preg_match($pattern, $url);
     }
-
+    
     /**
      * Parse the given oembed api endpoint and URL into a data object.
      *
@@ -378,7 +379,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         }
         $oembed_lookup = "$api_endpoint?url=" . urlencode($url);
         $oembed_lookup .= "&maxwidth=$maxwidth&maxheight=$maxheight";
-
+        
         // try json
         $contents = $this->file_get_contents_curl($oembed_lookup . "&format=json");
         if ($contents) {
@@ -392,7 +393,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
             return new SimpleXMLElement($contents);
         }
     }
-
+    
     private function file_get_contents_curl($url)
     {
         $ch = curl_init();
