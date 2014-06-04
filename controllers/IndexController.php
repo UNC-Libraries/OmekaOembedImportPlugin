@@ -44,7 +44,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
      * @return void
      * @author Stephen Ball, Dean Farrell
      */
-    public function indexAction() 
+    public function indexAction()
     {
         $oembedImportSession = new Zend_Session_Namespace('OembedImport');
         $oembed_data = null;
@@ -108,7 +108,8 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 'Dublin Core'=>array(
                     'Title'=>array(array('text'=>$title, 'html'=>true)),
                     'Description'=>array(array('text'=>$description, 'html'=>false)),
-                    'Publisher'=>array(array('text'=>$provider_name, 'html'=>false))
+                    'Publisher'=>array(array('text'=>$provider_name, 'html'=>false)),
+                    'Source'=>array(array('text'=>$original_url, 'html'=>true))
                 )
             );
             if (!empty($_POST['provider_url'])) {
@@ -227,7 +228,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $errors = array();
         $url_scheme = trim($whitelist['url_scheme']);
         $api_endpoint = trim($whitelist['api_endpoint']);
-        
+
         if (!strlen($url_scheme)) {
             $errors['url_scheme'] = 'Required.';
         } else {
@@ -244,7 +245,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         }
         return $errors;
     }
-    
+
     /**
      * Update the given whitelist in the database.
      *
@@ -262,7 +263,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $success = $db->query($sql, array($url_scheme, $api_endpoint, $id));
         return $success;
     }
-    
+
     /**
      * Insert a new whitelist into the database.
      *
@@ -279,7 +280,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $success = $db->query($sql, array($url_scheme, $api_endpoint));
         return $success;
     }
-    
+
     /**
      * Delete the given whitelist from the database.
      *
@@ -295,7 +296,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $success = $db->query($sql, array($id));
         return $success;
     }
-    
+
     /**
      * Validate POST data from an oembed item import.
      *
@@ -312,7 +313,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         }
         return $errors;
     }
-    
+
     /**
      * Determine the matching API Endpoint for a given URL.
      *
@@ -330,7 +331,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
                 FROM `{$db->prefix}oembed_import_whitelists`";
         $statement = $db->query($sql);
         $whitelist_rows = $statement->fetchAll();
-        
+
         foreach ($whitelist_rows as $row) {
             if ($this->endpoint_match($row['url_scheme'], $url)) {
                 return $row['api_endpoint'];
@@ -340,7 +341,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         // http://oohembed.com/
         return "http://oohembed.com/oohembed/";
     }
-    
+
     /**
      * Determine if the given url matches the given url scheme.
      *
@@ -359,7 +360,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
         $pattern = "|^$pattern$|";
         return preg_match($pattern, $url);
     }
-    
+
     /**
      * Parse the given oembed api endpoint and URL into a data object.
      *
@@ -394,7 +395,7 @@ class OembedImport_IndexController extends Omeka_Controller_AbstractActionContro
             return new SimpleXMLElement($contents);
         }
     }
-    
+
     private function file_get_contents_curl($url)
     {
         $ch = curl_init();
