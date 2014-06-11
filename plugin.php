@@ -60,11 +60,11 @@ function oembed_import_install()
         `api_endpoint` varchar(255) NOT NULL,
         PRIMARY KEY(`id`)
     ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;");
-    
+
     // initial whitelists
     $db->query("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
                VALUES ('http://dc.lib.unc.edu/*','http://dc.lib.unc.edu/oembed.php')");
-    
+
     $db->query("INSERT INTO `{$db->prefix}oembed_import_whitelists`(url_scheme, api_endpoint)
                VALUES ('http://*.flickr.com/*','http://www.flickr.com/services/oembed/')");
 }
